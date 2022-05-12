@@ -1,7 +1,7 @@
-require 'active_record'
+require 'application_record'
 
 module Preferencias
-  class Base < ActiveRecord::Base
+  class Base < ApplicationRecord
     include Preferencias::Preferable
 
     serialize :preferences, Hash
