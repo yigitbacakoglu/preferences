@@ -1,4 +1,4 @@
-require 'application_record'
+# require 'application_record'
 
 module Preferencias
   class Base < ApplicationRecord
