@@ -74,6 +74,15 @@ module Preferencias::Preferable
       pref_method.to_s.gsub(/\Apreferred_|=\Z/, '').to_sym
     end
   end
+  
+  def preferences
+    prefs = {}
+    methods.grep(/^prefers_.*\?$/).each do |pref_method|
+      prefs[pref_method.to_s.gsub(/prefers_|\?/, '').to_sym] = send(pref_method)
+    end
+    prefs
+  end
+
 
   def default_preferences
     Hash[
@@ -99,6 +108,11 @@ module Preferencias::Preferable
       BigDecimal.new(value.to_s)
     when :integer
       value.to_i
+            when :big_decimal
+        BigDecimal.new(value.to_s).round(12, BigDecimal::ROUND_HALF_UP)
+      when :float
+        value.to_f
+
     when :boolean
       if value.is_a?(FalseClass) ||
          value.nil? ||
