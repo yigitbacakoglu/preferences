@@ -11,7 +11,7 @@ require 'rails'
 module Preferencias
   class Engine < ::Rails::Engine
     initializer "preferences" do
-      ::ApplicationRecord.send :include, Preferencias::Preferable
+      ::ActiveRecord::Base.send :include, Preferencias::Preferable
     end
   end
 end
