@@ -65,15 +65,6 @@ module Preferencias::Preferable
     raise NoMethodError.new "#{name} preference not defined" unless has_preference? name
   end
   
-  
-  def preferences
-    prefs = {}
-    methods.grep(/^prefers_.*\?$/).each do |pref_method|
-      prefs[pref_method.to_s.gsub(/prefers_|\?/, '').to_sym] = send(pref_method)
-    end
-    prefs
-  end
-
 
   def has_preference?(name)
     respond_to? self.class.preference_getter_method(name)
