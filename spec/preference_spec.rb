@@ -9,6 +9,21 @@ describe Preferencias::Preference do
     expect(preference).to be_valid
   end
 
+  describe "preferences serialization" do
+    it "defaults missing preferences to an empty hash" do
+      preference = Preferencias::Preference.new
+
+      expect(preference.preferences).to eq({})
+    end
+
+    it "preserves preferences as a hash across saves and reloads" do
+      preferences = { "color" => "blue", "enabled" => true }
+      preference = Preferencias::Preference.create!(key: "preferences_key", preferences: preferences)
+
+      expect(preference.reload.preferences).to eq(preferences)
+    end
+  end
+
   describe "type coversion for values" do
 
     def round_trip_preference(key, value = false)
@@ -73,6 +88,13 @@ describe Preferencias::Preference do
       value = [1, 2]
       key = "any_key"
       pref = round_trip_preference(key, value)
+      expect(pref.value).to eq(value)
+    end
+
+    it ":hash" do
+      value = { "enabled" => true, "limits" => [1, 2] }
+      pref = round_trip_preference("hash_key", value)
+
       expect(pref.value).to eq(value)
     end
 
